@@ -59,13 +59,27 @@ namespace SpritePackerOverview
 
             InitIfNeeded();
             DrawToolbar();
-            DrawTreeView();
+            if (m_TreeModel.IsEmpty())
+            {
+                ShowNotification(new GUIContent("Please pack first"));
+            }
+            else
+            {
+                DrawTreeView();
+            }
         }
 
         private void DrawToolbar()
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-            m_TreeView.searchString = m_SearchField.OnToolbarGUI(m_TreeView.searchString);
+            if (GUILayout.Button("Refresh", EditorStyles.toolbarButton, GUILayout.Width(50f)))
+            {
+                Refresh();
+            }
+            if (!m_TreeModel.IsEmpty())
+            {
+                m_TreeView.searchString = m_SearchField.OnToolbarGUI(m_TreeView.searchString);
+            }
             EditorGUILayout.EndHorizontal();
         }
 
@@ -114,7 +128,10 @@ namespace SpritePackerOverview
         private void Refresh()
         {
             m_TreeModel.Reload();
-            m_TreeView.Reload();
+            if (!m_TreeModel.IsEmpty())
+            {
+                m_TreeView.Reload();
+            }
         }
 
         private MultiColumnHeaderState CreateMultiColumnHeader()

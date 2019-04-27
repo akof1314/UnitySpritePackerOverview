@@ -21,6 +21,11 @@ namespace SpritePackerOverview
             RefreshAtlasNameList();
         }
 
+        public bool IsEmpty()
+        {
+            return m_AtlasNames == null || m_AtlasNames.Length == 0;
+        }
+
         public string[] GetAtlasNames()
         {
             return m_AtlasNames;
